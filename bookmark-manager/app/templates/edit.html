@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}编辑书签 - 书签管理系统{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>编辑书签</h2>
+
+    <form method="POST" action="{{ url_for('main.edit_bookmark', id=bookmark.id) }}" class="bookmark-form">
+        <div class="form-group">
+            <label for="title">标题 <span class="required">*</span></label>
+            <input type="text" id="title" name="title" required
+                   value="{{ bookmark.title }}" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="url">网址 <span class="required">*</span></label>
+            <input type="url" id="url" name="url" required
+                   value="{{ bookmark.url }}" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="description">描述</label>
+            <textarea id="description" name="description" rows="4"
+                      class="form-input">{{ bookmark.description or '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">标签</label>
+            <input type="text" id="tags" name="tags"
+                   value="{{ bookmark.tags or '' }}" class="form-input">
+            <small class="form-hint">用逗号分隔多个标签</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 更新书签</button>
+            <a href="{{ url_for('main.index') }}" class="btn-secondary">取消</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

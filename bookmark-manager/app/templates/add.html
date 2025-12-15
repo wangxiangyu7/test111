@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}添加书签 - 书签管理系统{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>添加新书签</h2>
+
+    <form method="POST" action="{{ url_for('main.add_bookmark') }}" class="bookmark-form">
+        <div class="form-group">
+            <label for="title">标题 <span class="required">*</span></label>
+            <input type="text" id="title" name="title" required
+                   placeholder="输入书签标题" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="url">网址 <span class="required">*</span></label>
+            <input type="url" id="url" name="url" required
+                   placeholder="https://example.com" class="form-input">
+            <small class="form-hint">如果没有 http:// 或 https://，系统会自动添加</small>
+        </div>
+
+        <div class="form-group">
+            <label for="description">描述</label>
+            <textarea id="description" name="description" rows="4"
+                      placeholder="描述这个书签（可选）" class="form-input"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">标签</label>
+            <input type="text" id="tags" name="tags"
+                   placeholder="用逗号分隔，例如：前端, React, 教程" class="form-input">
+            <small class="form-hint">用逗号分隔多个标签</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 保存书签</button>
+            <a href="{{ url_for('main.index') }}" class="btn-secondary">取消</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

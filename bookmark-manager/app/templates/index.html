@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="search-section">
+    <form method="GET" action="{{ url_for('main.index') }}" class="search-form">
+        <input type="text" name="search" placeholder="搜索书签（标题、URL、描述）..."
+               value="{{ search_query }}" class="search-input">
+        <button type="submit" class="btn-search">🔍 搜索</button>
+        {% if search_query or tag_filter %}
+            <a href="{{ url_for('main.index') }}" class="btn-clear">清除筛选</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="tags-section">
+    <h3>标签筛选：</h3>
+    <div class="tags-container">
+        {% if all_tags %}
+            {% for tag in all_tags %}
+                <a href="{{ url_for('main.index', tag=tag) }}"
+                   class="tag {% if tag == tag_filter %}tag-active{% endif %}">
+                    {{ tag }}
+                </a>
+            {% endfor %}
+        {% else %}
+            <p class="no-tags">暂无标签</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="bookmarks-section">
+    <h2>我的书签 ({{ bookmarks|length }})</h2>
+
+    {% if bookmarks %}
+        <div class="bookmarks-grid">
+            {% for bookmark in bookmarks %}
+                <div class="bookmark-card">
+                    <div class="bookmark-header">
+                        <h3 class="bookmark-title">
+                            <a href="{{ bookmark.url }}" target="_blank" rel="noopener noreferrer">
+                                {{ bookmark.title }}
+                            </a>
+                        </h3>
+                        <div class="bookmark-actions">
+                            <a href="{{ url_for('main.edit_bookmark', id=bookmark.id) }}"
+                               class="btn-icon" title="编辑">✏️</a>
+                            <a href="{{ url_for('main.delete_bookmark', id=bookmark.id) }}"
+                               class="btn-icon btn-delete" title="删除"
+                               onclick="return confirm('确定要删除这个书签吗？')">🗑️</a>
+                        </div>
+                    </div>
+
+                    <p class="bookmark-url">
+                        <a href="{{ bookmark.url }}" target="_blank" rel="noopener noreferrer">
+                            {{ bookmark.url }}
+                        </a>
+                    </p>
+
+                    {% if bookmark.description %}
+                        <p class="bookmark-description">{{ bookmark.description }}</p>
+                    {% endif %}
+
+                    {% if bookmark.tags %}
+                        <div class="bookmark-tags">
+                            {% for tag in bookmark.get_tags_list() %}
+                                <a href="{{ url_for('main.index', tag=tag) }}" class="tag-small">{{ tag }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <p class="bookmark-date">
+                        创建于: {{ bookmark.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p class="empty-icon">📭</p>
+            <p class="empty-text">
+                {% if search_query or tag_filter %}
+                    没有找到匹配的书签
+                {% else %}
+                    还没有添加任何书签，点击上方"添加书签"开始吧！
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
