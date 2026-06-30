@@ -5,7 +5,7 @@
     <form method="GET" action="{{ url_for('main.index') }}" class="search-form">
         <input type="text" name="search" placeholder="搜索书签（标题、URL、描述）..."
                value="{{ search_query }}" class="search-input">
-        <button type="submit" class="btn-search">🔍 搜索</button>
+        <button type="submit" class="btn-search">搜索</button>
         {% if search_query or tag_filter %}
             <a href="{{ url_for('main.index') }}" class="btn-clear">清除筛选</a>
         {% endif %}
@@ -43,10 +43,10 @@
                         </h3>
                         <div class="bookmark-actions">
                             <a href="{{ url_for('main.edit_bookmark', id=bookmark.id) }}"
-                               class="btn-icon" title="编辑">✏️</a>
+                               class="btn-icon" title="编辑">编辑</a>
                             <a href="{{ url_for('main.delete_bookmark', id=bookmark.id) }}"
                                class="btn-icon btn-delete" title="删除"
-                               onclick="return confirm('确定要删除这个书签吗？')">🗑️</a>
+                               onclick="return confirm('确定要删除这个书签吗？')">删除</a>
                         </div>
                     </div>
 
@@ -76,7 +76,6 @@
         </div>
     {% else %}
         <div class="empty-state">
-            <p class="empty-icon">📭</p>
             <p class="empty-text">
                 {% if search_query or tag_filter %}
                     没有找到匹配的书签
