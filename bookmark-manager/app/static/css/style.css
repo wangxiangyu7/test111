@@ -97,6 +97,11 @@ a {
     background: rgba(0, 0, 0, 0.05);
 }
 
+.nav-links a.btn-primary,
+.nav-links a.btn-primary:hover {
+    color: #ffffff;
+}
+
 .btn-primary,
 .btn-secondary,
 .btn-search,
