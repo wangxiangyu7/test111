@@ -1,93 +1,113 @@
-# leoschopen1-project
+# 书签管理器
 
+这是一个基于 Flask 的个人书签管理项目，用来集中保存、检索和整理常用网页链接。项目提供一个简洁的 Web 页面，用户可以添加书签、编辑书签信息、按关键词搜索，也可以通过标签对书签进行分类筛选。
 
+应用数据默认存储在本地 SQLite 数据库中，适合作为 Flask 入门练习、小型个人工具，或后续扩展成多用户收藏夹系统的基础版本。
 
-## Getting started
+## 主要功能
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- 添加书签：保存标题、URL、描述和标签。
+- 编辑书签：修改已保存书签的标题、链接、描述或标签。
+- 删除书签：移除不再需要的收藏链接。
+- 关键词搜索：支持按标题、URL 和描述搜索。
+- 标签筛选：用逗号分隔标签，并在首页按标签过滤书签。
+- URL 自动补全：输入没有协议的 URL 时，会自动补上 `https://`。
+- 响应式页面：基础页面适配桌面和移动端浏览。
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 技术栈
 
-## Add your files
+- Python
+- Flask 3.0.0
+- Flask-SQLAlchemy 3.1.1
+- SQLite
+- HTML、CSS、原生 JavaScript
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## 项目结构
 
+```text
+.
+├── README.md
+└── bookmark-manager/
+    ├── app/
+    │   ├── __init__.py          # Flask 应用创建、配置和数据库初始化
+    │   ├── models.py            # Bookmark 数据模型
+    │   ├── routes.py            # 首页、添加、编辑、删除等路由
+    │   ├── static/
+    │   │   └── css/
+    │   │       └── style.css    # 页面样式
+    │   └── templates/
+    │       ├── base.html        # 公共布局模板
+    │       ├── index.html       # 书签列表、搜索和标签筛选
+    │       ├── add.html         # 添加书签页面
+    │       └── edit.html        # 编辑书签页面
+    ├── README.md                # 子项目说明
+    ├── requirements.txt         # Python 依赖
+    └── run.py                   # 应用启动入口
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/leoschopen1-group/leoschopen1-project.git
-git branch -M main
-git push -uf origin main
+
+## 快速开始
+
+进入应用目录：
+
+```bash
+cd bookmark-manager
 ```
 
-## Integrate with your tools
+建议创建并启用虚拟环境：
 
-* [Set up project integrations](https://gitlab.com/leoschopen1-group/leoschopen1-project/-/settings/integrations)
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
 
-## Collaborate with your team
+安装依赖：
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```bash
+pip install -r requirements.txt
+```
 
-## Test and Deploy
+启动应用：
 
-Use the built-in continuous integration in GitLab.
+```bash
+python run.py
+```
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+启动后在浏览器访问：
 
-***
+```text
+http://127.0.0.1:5000
+```
 
-# Editing this README
+首次启动时，应用会自动创建 SQLite 数据库和数据表。
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## 使用说明
 
-## Suggestions for a good README
+1. 在首页点击“添加书签”。
+2. 填写书签标题和 URL，按需填写描述和标签。
+3. 回到首页后，可以通过搜索框查找书签。
+4. 点击标签可以筛选对应分类下的书签。
+5. 每个书签卡片提供编辑和删除入口。
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 配置说明
 
-## Name
-Choose a self-explaining name for your project.
+应用配置位于 `bookmark-manager/app/__init__.py`：
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+```python
+app.config['SECRET_KEY'] = 'dev-secret-key-change-in-production'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookmarks.db'
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+当前配置适合本地开发。若部署到生产环境，应替换 `SECRET_KEY`，并根据实际需要调整数据库配置。
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## 后续可扩展方向
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- 用户注册和登录
+- 书签导入、导出
+- 收藏夹或分组管理
+- favicon 显示
+- 批量删除或批量打标签
+- 排序和分页
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## 许可证
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+当前项目用于学习和个人使用，尚未声明开源许可证。
